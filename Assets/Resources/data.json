@@ -1,0 +1,60 @@
+{
+  "titulo": "PRUEBA DE FUNCIOAMIENTO",
+  "texto": "Había una vez un pequeño ratón llamado Lucas que vivía en un agujero en la pared de una casa antigua. Lucas siempre soñaba con aventuras más allá de su hogar, pero era demasiado tímido para salir. Un día, escuchó un misterioso susurro que venía del sótano.  Intrigado, Lucas decidió explorar. Descubrió un pasadizo secreto que lo llevó a un jardín encantado, lleno de flores brillantes y animales parlantes. Allí conoció a Olivia, una mariposa valiente que le mostró un mundo lleno de magia y amistad.  Juntos, Lucas y Olivia vivieron emocionantes aventuras, volando en el lomo de pájaros gigantes y ayudando a criaturas mágicas. Con el tiempo, Lucas se dio cuenta de que el mundo exterior era un lugar asombroso y que la valentía podía abrir puertas a nuevas experiencias.  Al final de su cuento, Lucas regresó a su hogar en la pared, pero ahora sabía que, aunque fuera pequeño, su corazón estaba lleno de coraje y que siempre podría explorar el mundo cuando quisiera.",
+  "preguntas": [
+    {
+      "id_pregunta": 1,
+      "pregunta": "¿Qué motivó a Lucas a salir de su agujero en la pared?",
+      "opciones": [
+        {
+          "id_opcion": 1,
+          "texto_opcion": "Un ruido fuerte en la casa."
+        },
+        {
+          "id_opcion": 2,
+          "texto_opcion": "El miedo a quedarse solo."
+        },
+        {
+          "id_opcion": 3,
+          "texto_opcion": "Un misterioso susurro proveniente del sótano."
+        }
+      ]
+    },
+    {
+      "id_pregunta": 2,
+      "pregunta": "¿Qué encontró Lucas cuando exploró el pasadizo secreto?",
+      "opciones": [
+        {
+          "id_opcion": 1,
+          "texto_opcion": " Un mundo lleno de magia y amistad."
+        },
+        {
+          "id_opcion": 2,
+          "texto_opcion": "Un lugar oscuro y aterrador."
+        },
+        {
+          "id_opcion": 3,
+          "texto_opcion": "Otros ratones que vivían allí."
+        }
+      ]
+    },
+    {
+      "id_pregunta": 3,
+      "pregunta": "¿Qué le enseñó su amiga Olivia a Lucas durante sus aventuras?",
+      "opciones": [
+        {
+          "id_opcion": 1,
+          "texto_opcion": "A ser más tímido y cauteloso."
+        },
+        {
+          "id_opcion": 2,
+          "texto_opcion": "Que el mundo exterior no era interesante."
+        },
+        {
+          "id_opcion": 3,
+          "texto_opcion": "Que la valentía podía abrir puertas a nuevas experiencias emocionantes."
+        }
+      ]
+    }
+  ]
+}
