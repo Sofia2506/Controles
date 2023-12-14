@@ -1,49 +1,73 @@
 using UnityEngine;
-using System.Collections.Generic;
+using UnityEngine.Networking;
+using SimpleJSON;
 using TMPro;
+using System.Collections;
 
 public class mostrar : MonoBehaviour
 {
+    public TextMeshProUGUI lectura;
+    public TextMeshProUGUI texto;
     public TextMeshProUGUI textoMostrar;
     public TextMeshProUGUI textoMostrar2;
     public TextMeshProUGUI textoMostrar3;
-    public TextMeshProUGUI lectura;
-    public TextMeshProUGUI texto;
 
-    private void Start()
+    private IEnumerator Start()
     {
-        // Cargar el archivo JSON desde la carpeta Resources
-        TextAsset jsonFile = Resources.Load<TextAsset>("data");
+        string url = "http://localhost:8081/reading-control"; // Reemplaza "URL_DEL_ENDPOINT" con tu URL
 
-        // Deserializar el JSON en la clase Data
-        Data data = JsonUtility.FromJson<Data>(jsonFile.text);
+        UnityWebRequest webRequest = UnityWebRequest.Get(url);
+        yield return webRequest.SendWebRequest();
 
-        int cantPreguntas = data.preguntas.Count;
-        // Mostrar los datos en pantalla (en este ejemplo, solo se mostrará el primer personaje)
-        lectura.text = "Lectura: "+data.titulo;
-        texto.text = data.texto;
-        if (cantPreguntas > 0)
+        if (webRequest.result != UnityWebRequest.Result.Success)
         {
-            Pregunta pregunta1 = data.preguntas[0];
-            string opciones="";
-            for(int i=0; i<pregunta1.opciones.Count; i++){
-                opciones += (i+1)+". "+pregunta1.opciones[i].texto_opcion+"\n";
-            }
-            textoMostrar.text = "Pregunta 0"+pregunta1.id_pregunta+"\n"+pregunta1.pregunta +"\n"+opciones;
+            Debug.LogError("Error al llamar al endpoint: " + webRequest.error);
+        }
+        else
+        {
+            string responseText = webRequest.downloadHandler.text;
 
-            Pregunta pregunta2 = data.preguntas[1];
-            opciones="";
-            for(int i=0; i<pregunta2.opciones.Count; i++){
-                opciones += (i+1)+". "+pregunta2.opciones[i].texto_opcion+"\n";
-            }
-            textoMostrar2.text = "Pregunta 0"+pregunta2.id_pregunta+"\n"+pregunta2.pregunta +"\n"+opciones;
+            // Parsear la respuesta JSON utilizando SimpleJSON
+            JSONNode jsonResponse = JSON.Parse(responseText);
 
-            Pregunta pregunta3 = data.preguntas[2];
-            opciones="";
-            for(int i=0; i<pregunta3.opciones.Count; i++){
-                opciones += (i+1)+". "+pregunta3.opciones[i].texto_opcion+"\n";
+            // Mostrar los datos obtenidos en pantalla
+            JSONNode readingsArray = jsonResponse["readings"];
+            if (readingsArray != null && readingsArray.IsArray && readingsArray.Count > 0)
+            {
+                JSONNode firstReading = readingsArray[0];
+                lectura.text = "Lectura: " + firstReading["title"];
+                texto.text = firstReading["text"];
+
+                JSONNode questions = firstReading["questions"];
+                if (questions != null && questions.IsArray && questions.Count > 0)
+                {
+                    for (int i = 0; i < Mathf.Min(3, questions.Count); i++) // Mostrar solo las primeras 3 preguntas
+                    {
+                        JSONNode question = questions[i];
+                        string opciones = "";
+                        JSONNode optionsArray = question["options"];
+                        if (optionsArray != null && optionsArray.IsArray)
+                        {
+                            for (int j = 0; j < optionsArray.Count; j++)
+                            {
+                                opciones += (j + 1) + ". " + optionsArray[j]["option_text"] + "\n";
+                            }
+                        }
+                        switch (i)
+                        {
+                            case 0:
+                                textoMostrar.text = "Pregunta 0" + question["question_id"] + "\n" + question["question_text"] + "\n" + opciones;
+                                break;
+                            case 1:
+                                textoMostrar2.text = "Pregunta 0" + question["question_id"] + "\n" + question["question_text"] + "\n" + opciones;
+                                break;
+                            case 2:
+                                textoMostrar3.text = "Pregunta 0" + question["question_id"] + "\n" + question["question_text"] + "\n" + opciones;
+                                break;
+                        }
+                    }
+                }
             }
-            textoMostrar3.text = "Pregunta 0"+pregunta3.id_pregunta+"\n"+pregunta3.pregunta +"\n"+opciones;
         }
     }
 }
