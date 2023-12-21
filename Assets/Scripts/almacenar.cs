@@ -3,21 +3,21 @@ using System.Collections.Generic;
 [System.Serializable]
 public class Opcion
 {
-    public string texto_opcion;
-    public int id_opcion;
+    public string option_text;
+    public int option_id;
 }
 [System.Serializable]
 public class Pregunta
 {
-    public string pregunta;
-    public int id_pregunta;
-    public List<Opcion> opciones;
+    public string question_text;
+    public int question_id;
+    public List<Opcion> options;
 }
 
 [System.Serializable]
 public class Data
 {
-    public List<Pregunta> preguntas;
-    public string titulo;
-    public string texto;
+    public List<Pregunta> questions;
+    public string title;
+    public string text;
 }
