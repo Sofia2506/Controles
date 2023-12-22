@@ -50,7 +50,7 @@ public class ObjectClicker : MonoBehaviour
                 {
                     if (hit.collider.gameObject.name == "Pizarra" + i)
                     {
-                        objectNameText.text = "Pregunta " + i;
+                        objectNameText.text = "Respondiendo Pregunta " + i;
                         Debug.Log(objectNameText.text);
                         preguntaActualId = i; // Actualiza la pregunta actual
                         break; // Salir del bucle una vez que se encuentra la pizarra correcta
