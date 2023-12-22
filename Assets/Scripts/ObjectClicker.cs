@@ -14,6 +14,8 @@ public class ObjectClicker : MonoBehaviour
 
     private int preguntaActualId = -1; // ID de la pregunta actual
 
+    private JSONNode jsonData;
+
     void Start()
     {
         objectNameText.text = "Haz clic en una pizarra para responder una pregunta";
@@ -31,6 +33,7 @@ public class ObjectClicker : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return)) // Verificar si se presiona la tecla Enter
         {
             StartCoroutine(ObtenerRespuestasDesdeEndpoint());
+            Debug.Log("JSON obtenido: " + jsonData.ToString());
         }
     }
 
@@ -105,6 +108,8 @@ public class ObjectClicker : MonoBehaviour
 
  private JSONNode FindReadingByQuestionId(JSONNode jsonData, int questionId)
     {
+        Debug.Log("Buscando lectura para la pregunta ID: " + questionId);
+        Debug.Log("data: " + jsonData.ToString());
         if (jsonData != null && jsonData["readings"] != null)
         {
             foreach (JSONNode reading in jsonData["readings"])
@@ -116,6 +121,7 @@ public class ObjectClicker : MonoBehaviour
                         if (question["question_id"].AsInt == questionId)
                         {
                             Debug.Log("Lectura encontrada para la pregunta ID: " + questionId);
+                            Debug.Log("data: " + reading.ToString());
                             return reading;
                         }
                     }
@@ -156,7 +162,7 @@ public class ObjectClicker : MonoBehaviour
         else
         {
             // Procesar el JSON obtenido
-            JSONNode jsonData = JSON.Parse(request.downloadHandler.text);
+            jsonData = JSON.Parse(request.downloadHandler.text);
             
             Debug.Log("JSON obtenido: " + jsonData.ToString());
 
@@ -173,17 +179,22 @@ public class ObjectClicker : MonoBehaviour
             // Aquí puedes hacer coincidir las respuestas del usuario con el texto de las opciones
             Dictionary<int, string> respuestasTextoOpciones = new Dictionary<int, string>();
 
-            Debug.Log("Respuestas del usuario: " + respuestasUsuario.Count);
-
             foreach (KeyValuePair<int, int> respuesta in respuestasUsuario)
             {
                 int preguntaId = respuesta.Key;
                 int opcionSeleccionada = respuesta.Value;
 
-                Debug.Log("Pregunta ID: " + preguntaId + " - Opción seleccionada: " + opcionSeleccionada);
+                if (jsonData != null) 
+                {
+                    Debug.Log("JSON DATA NO ES NULO");
+                } else {
+                    Debug.Log("JSON DATA ES NULO" + jsonData.ToString());
+                }
 
                 // Encontrar la lectura, pregunta y opción correspondientes en el JSON
-                JSONNode lecturaActual = FindReadingByQuestionId(jsonData, preguntaId);          
+                JSONNode lecturaActual = FindReadingByQuestionId(jsonData, preguntaId);   
+
+                Debug.Log("Lectura actual: " + lecturaActual.ToString() + " - Pregunta ID: " + preguntaId);       
 
                 if (lecturaActual != null)
                 {
